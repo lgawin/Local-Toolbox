@@ -1,0 +1,30 @@
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    restart: unless-stopped
+
+  whoami:
+    image: jwilder/whoami
+    environment:
+      - VIRTUAL_HOST=localhost
+
+  it-tools:
+    image: corentinth/it-tools:latest
+    environment:
+      - VIRTUAL_HOST=tools.local
+    restart: unless-stopped
+
+  wiki:
+    image: zavy86/wikidocs
+    volumes:
+      - "wiki-docs:/datasets"
+    environment:
+      - VIRTUAL_HOST=wiki.local
+    restart: unless-stopped
+
+volumes:
+  wiki-docs:
